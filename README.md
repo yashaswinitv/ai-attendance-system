@@ -1,6 +1,6 @@
 # 🤖 AI-Powered Attendance Management System
 
-![AI Attendance System](images/ai-attendance.webp)
+
 
 ## 📌 Overview
 
