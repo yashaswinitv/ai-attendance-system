@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Attendance</title>
+</head>
+<body>
+    <h1>Student Attendance Management</h1>
+
+    <!-- Add Student -->
+    <h2>Add Student</h2>
+    <form action="/add_student" method="POST">
+        <input type="text" name="name" placeholder="Student Name" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <!-- Mark Attendance -->
+    <h2>Mark Attendance</h2>
+    <form action="/mark_attendance" method="POST">
+        <select name="student_id" required>
+            {% for id, name in students %}
+                <option value="{{ id }}">{{ name }}</option>
+            {% endfor %}
+        </select>
+        <select name="status" required>
+            <option value="Present">Present</option>
+            <option value="Absent">Absent</option>
+        </select>
+        <button type="submit">Mark</button>
+    </form>
+
+    <!-- Attendance Summary -->
+    <h2>Attendance Summary</h2>
+    {% if summary %}
+        <table border="1">
+            <tr>
+                <th>Name</th>
+                <th>Present</th>
+                <th>Absent</th>
+                <th>Total</th>
+                <th>Attendance %</th>
+                <th>Status</th>
+            </tr>
+            {% for row in summary.values %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1]|default(0) }}</td>
+                    <td>{{ row[2]|default(0) }}</td>
+                    <td>{{ row[3] }}</td>
+                    <td>{{ "%.2f"|format(row[4]) }}%</td>
+                    <td>
+                        {% if row[4] < 75 %}
+                            ⚠️ At Risk
+                        {% else %}
+                            ✅ Safe
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No attendance records yet.</p>
+    {% endif %}
+</body>
+</html>
